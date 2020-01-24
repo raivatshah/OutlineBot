@@ -9,6 +9,7 @@ import logging
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import time
+from pyvirtualdisplay import Display
 
 # Logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -20,10 +21,9 @@ def start(update, context):
 
 def read(update, context):
     # Processing Outline
-    chrome_options = webdriver.ChromeOptions()
-    chrome_options.add_argument("--headless")
-    chrome_options.add_argument('--no-sandbox')
-    browser = webdriver.Chrome(driver_path="../chromedriver", chrome_options=chrome_options, 
+    display = Display(visible=0, size=(1024, 768))
+    display.start()
+    browser = webdriver.Chrome(driver_path="../chromedriver",  
     service_args=['--verbose', '--log-path=/tmp/chromedriver.log'])
     browser.get('https://www.outline.com')
     linkbar = browser.find_element_by_id('source')
