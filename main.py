@@ -1,7 +1,7 @@
 """ 
 Simple Telegram Bot to automate the process of obtaining Outline.com links. 
 
-Created by Raivat Shah in 2019. 
+Created by Raivat Shah in 2019. Updated in 2020
 """
 # Imports
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
@@ -20,7 +20,11 @@ def start(update, context):
 
 def read(update, context):
     # Processing Outline
-    browser = webdriver.Chrome('directory_of_chrome_driver')
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument('--no-sandbox')
+    browser = webdriver.Chrome(driver_path="../chromedriver", chrome_options=chrome_options, 
+    service_args=['--verbose', '--log-path=/tmp/chromedriver.log'])
     browser.get('https://www.outline.com')
     linkbar = browser.find_element_by_id('source')
     linkbar.send_keys(context.args) # pass in the link from the argument
