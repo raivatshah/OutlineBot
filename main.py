@@ -10,6 +10,7 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import time
 from pyvirtualdisplay import Display
+import os
 
 # Logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -21,9 +22,9 @@ def start(update, context):
 
 def read(update, context):
     # Processing Outline
-    display = Display(visible=0, size=(1024, 768))
-    display.start()
-    browser = webdriver.Chrome(driver_path="../chromedriver",  
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_argument('--headless')
+    browser = webdriver.Chrome("../chromedriver", chrome_options=chrome_options,
     service_args=['--verbose', '--log-path=/tmp/chromedriver.log'])
     browser.get('https://www.outline.com')
     linkbar = browser.find_element_by_id('source')
@@ -35,7 +36,7 @@ def read(update, context):
     
 def main():
     # Create updater and pass in Bot's auth key. 
-    updater = Updater(token='your_bot_auth_key_here', use_context=True)
+    updater = Updater(token=os.environ.get("KEY"), use_context=True)
     # Get dispatcher to register handlers
     dispatcher = updater.dispatcher
     # answer commands
